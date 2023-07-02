@@ -29,9 +29,36 @@ jest.mock("../../src/client/components/Form", () => {
 });
 
 it(
-  'Cсылка на каталог должна показываться только при пустой корзине' +
+  'Cсылка на каталог НЕ должна показываться при НЕ пустой корзине' +
   ' // ' + 
-  'The link to the catalog should only be shown when the cart is empty',
+  'The link to the catalog must not be shown when the cart is not empty',
+  async () => {
+    const api = new ExampleApiMock('') as unknown as ExampleApi;
+    const cart = new CartApiMock();
+    cart.setState({
+      0: {
+        count: 1,
+        name: 'name1',
+        price: 1000,
+      }
+    });
+    const store = initStore(api, cart);
+    const application = (
+      <MemoryRouter initialEntries={['/cart']} initialIndex={0}>
+        <Provider store={store} >
+          <Application />
+        </Provider>
+      </MemoryRouter>
+    );
+    render(application);
+    expect(screen.queryByTestId('link-to-catalog')).not.toBeInTheDocument();
+  }
+);
+
+it(
+  'Cсылка на каталог должна показываться при пустой корзине' +
+  ' // ' + 
+  'The link to the catalog must be shown when the cart is empty',
   async () => {
     const api = new ExampleApiMock('') as unknown as ExampleApi;
     const cart = new CartApiMock();
@@ -46,22 +73,42 @@ it(
     );
     render(application);
     expect((await screen.findByTestId('link-to-catalog'))?.getAttribute('href')).toBe('/catalog');
-    store.dispatch(addToCart({
-      color: 'color1',
-      description: 'desc1',
-      id: 1,
-      material: 'mat1',
-      name: 'name1',
-      price: 1000,
-    }));
-    expect(screen.queryByTestId('link-to-catalog')).not.toBeInTheDocument();
   }
 );
 
 it(
-  'Таблица и форма заказа должны показываться только при наличии товаров в карзине' +
+  'Таблица и форма заказа должны показываться при наличии товаров в карзине' +
   ' // ' + 
-  'The table and the order form should be displayed only if there are products in the cart',
+  'The table and the order form must be displayed if there are products in the cart',
+  async () => {
+    const api = new ExampleApiMock('') as unknown as ExampleApi;
+    const cart = new CartApiMock();
+    cart.setState({
+      0: {
+        count: 1,
+        name: 'name1',
+        price: 1000,
+      }
+    });
+    const store = initStore(api, cart);
+    const application = (
+      <MemoryRouter initialEntries={['/cart']} initialIndex={0}>
+        <Provider store={store} >
+          <Application />
+        </Provider>
+      </MemoryRouter>
+    );
+    render(application);
+    expect(screen.queryByTestId('order-table')).toBeInTheDocument();
+    expect(screen.queryByTestId('order-from')).toBeInTheDocument();
+    expect(screen.queryByTestId('order-clear')).toBeInTheDocument();
+  }
+);
+
+it(
+  'Таблица и форма заказа НЕ должны показываться при отсутствии товаров в карзине' +
+  ' // ' + 
+  'The table and the order form must NOT be displayed if there are no products in the cart',
   async () => {
     const api = new ExampleApiMock('') as unknown as ExampleApi;
     const cart = new CartApiMock();
@@ -78,17 +125,6 @@ it(
     expect(screen.queryByTestId('order-table')).not.toBeInTheDocument();
     expect(screen.queryByTestId('order-from')).not.toBeInTheDocument();
     expect(screen.queryByTestId('order-clear')).not.toBeInTheDocument();
-    store.dispatch(addToCart({
-      color: 'color1',
-      description: 'desc1',
-      id: 1,
-      material: 'mat1',
-      name: 'name1',
-      price: 1000,
-    }));
-    expect(screen.queryByTestId('order-table')).toBeInTheDocument();
-    expect(screen.queryByTestId('order-from')).toBeInTheDocument();
-    expect(screen.queryByTestId('order-clear')).toBeInTheDocument();
   }
 );
 

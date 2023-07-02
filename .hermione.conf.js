@@ -19,14 +19,15 @@ module.exports = {
   screenshotDelay: 1000,
   browsers: {
     chrome: {
+      testsPerSession: 1,
       automationProtocol: "devtools",
       desiredCapabilities: {
         browserName: "chrome",
       },
-      // windowSize: {
-      //   width: 800,
-      //   height: 1000
-      // }
+      windowSize: {
+        width: 1920,
+        height: 1080
+      }
       
     },
     // chrome2: {

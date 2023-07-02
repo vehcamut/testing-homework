@@ -34,23 +34,23 @@ export const Application: FC = () => {
 
     return <div className={bem()}>
         <Helmet titleTemplate="%s — Example store" />
-        <nav className="navbar navbar-expand-sm navbar-light bg-light">
+        <nav className="navbar navbar-expand-sm navbar-light bg-light" data-testid="navbar">
             <div className="container">
                 <Link className={bem('Brand', ['navbar-brand'])} to="/" data-testid="main-title">Example store</Link>
-                <button className={bem('Toggler', ['navbar-toggler'])} aria-label="Toggle navigation" onClick={toggle}>
+                <button className={bem('Toggler', ['navbar-toggler'])} aria-label="Toggle navigation" onClick={toggle} data-testid="navbar-toggler">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className={bem('Menu', [navbarClass])}>
+                <div className={bem('Menu', [navbarClass])} data-testid="menu">
                     <div className="navbar-nav">
-                        <NavLink className="nav-link" activeClassName="active" to="/catalog" onClick={hide}>Catalog</NavLink>
-                        <NavLink className="nav-link" activeClassName="active" to="/delivery" onClick={hide}>Delivery</NavLink>
-                        <NavLink className="nav-link" activeClassName="active" to="/contacts" onClick={hide}>Contacts</NavLink>
-                        <NavLink className="nav-link" activeClassName="active" to="/cart" onClick={hide}>{cartLabel}</NavLink>
+                        <NavLink className="nav-link" activeClassName="active" to="/catalog" onClick={hide} data-testid="nav-link">Catalog</NavLink>
+                        <NavLink className="nav-link" activeClassName="active" to="/delivery" onClick={hide} data-testid="nav-link">Delivery</NavLink>
+                        <NavLink className="nav-link" activeClassName="active" to="/contacts" onClick={hide} data-testid="nav-link">Contacts</NavLink>
+                        <NavLink className="nav-link" activeClassName="active" to="/cart" onClick={hide} data-testid="nav-link">{cartLabel}</NavLink>
                     </div>
                 </div>
             </div>
         </nav>
-        <div className="container pt-4">
+        <div className="container pt-4" data-testid="container">
             <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/catalog" exact component={Catalog} />

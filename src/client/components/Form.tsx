@@ -2,7 +2,12 @@ import React, { ChangeEvent, useCallback, useState } from 'react';
 import { cn } from '@bem-react/classname';
 import { CheckoutFormData } from '../../common/types';
 
-const PHONE_REGEX = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+//! NEW BUG_ID=11 (BAD REGEX)
+const PHONE_REGEX = process.env.BUG_ID === '11' ? /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/ : /^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})$/;
+// bad regExp
+// const PHONE_REGEX = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+// good regExp
+// const PHONE_REGEX = /^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})$/;
 
 export interface FormProps {
     onSubmit: (data: CheckoutFormData) => void;
@@ -35,8 +40,10 @@ export const Form: React.FC<FormProps> = ({ onSubmit }) => {
 
     const onChangeAddress = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
         setAddress(e.target.value);
-    }, [setAddress]);
+    }
+    , [setAddress]);
 
+    //! NEW BUG_ID=12 (BAD USECALLBACK)
     const onClick = useCallback(() => {
         setSubmitted(true);
 
@@ -48,7 +55,11 @@ export const Form: React.FC<FormProps> = ({ onSubmit }) => {
                 address: address.trim(),
             });
         }
-    }, [nameIsValid, phoneIsValid, addressIsValid, setSubmitted, setSent, onSubmit]);
+    }, 
+        process.env.BUG_ID === '12' ? 
+        [nameIsValid, phoneIsValid, addressIsValid, setSubmitted, setSent, onSubmit] :
+        [nameIsValid, phoneIsValid, addressIsValid, setSubmitted, setSent, onSubmit, address, name, phone]        
+    );
 
     return (
         <div className={bem()}>
@@ -61,7 +72,7 @@ export const Form: React.FC<FormProps> = ({ onSubmit }) => {
                     className={bem("Field", { type: 'name' }, [getControlClass(nameIsValid, submitted)])}
                     autoComplete="off"
                     onChange={onChangeName} />
-                <div className="invalid-feedback">Please provide your name</div>
+                <div className="invalid-feedback" data-testid="f-name-ivalid-feedback">Please provide your name</div>
             </div>
             <div className="mb-3">
                 <label htmlFor="f-phone" className="form-label">Phone</label>
@@ -80,11 +91,13 @@ export const Form: React.FC<FormProps> = ({ onSubmit }) => {
                     disabled={sent}
                     rows={3}
                     className={bem("Field", { type: 'address' }, [getControlClass(addressIsValid, submitted)] )}
-                    onChange={onChangeAddress}></textarea>
+                    onChange={onChangeAddress}>
+                
+                    </textarea>
                 <div className="invalid-feedback">Please provide a valid address</div>
             </div>
 
-            <button className={bem('Submit', ['btn', 'btn-primary'])} disabled={sent} onClick={onClick}>Checkout</button>
+            <button className={bem('Submit', ['btn', 'btn-primary'])} disabled={sent} onClick={onClick} data-testid="submit">Checkout</button>
         </div>
     );
 }

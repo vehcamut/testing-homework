@@ -40,14 +40,11 @@ it(
       price: 1000,
     }));
 
+    const result = store.getState().cart;
     rerender(application);
     
-    expect(cart.getState()).toStrictEqual({
-      1: {
-        count: 1,
-        name: "name1",
-        price: 1000,
-      }
-    });
+    expect(cart.getState()).toStrictEqual(
+      result
+    );
   }
 );

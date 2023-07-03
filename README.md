@@ -6,9 +6,9 @@
 
 Если ты здесь, то тебе выпала участь проверять мое решение! Я рад видеть тебя в своем уютненьком репозитории!
 
-<img src="https://img.freepik.com/free-vector/cute-cat-sitting-on-book-stack-cartoon-icon-illustration-animal-education-icon-isolated-flat-cartoon-style_138676-3108.jpg?w=740&t=st=1687765106~exp=1687765706~hmac=f9f763667068cb7c914a95b59aea8750aa4a3d2c8d578111273ede2f6db24cb3">
+<img src="https://img.freepik.com/free-vector/cute-cat-holding-fish-cartoon-icon-illustration-animal-food-icon-concept-isolated-flat-cartoon-style_138676-2171.jpg?w=740&t=st=1688364675~exp=1688365275~hmac=e0f4ab9baae1774e473dad18a3bd24c28f86883ba05ede833523005500a39ed0">
 
-~~(это вроде как надо для использования картинки не обращай внимание (<a href="https://ru.freepik.com/free-vector/cute-cat-sitting-on-book-stack-cartoon-icon-illustration-animal-education-icon-isolated-flat-cartoon-style_13851657.htm#query=%D0%BA%D0%BE%D1%82%20%D0%B2%20%D0%BE%D1%87%D0%BA%D0%B0%D1%85&position=6&from_view=search&track=ais">Изображение от catalyststuff</a> на Freepik))~~
+~~(это вроде как надо для использования картинки не обращай внимание (<a href="https://ru.freepik.com/free-vector/cute-cat-holding-fish-cartoon-icon-illustration-animal-food-icon-concept-isolated-flat-cartoon-style_10909207.htm#page=2&query=cute%20cat&position=10&from_view=search&track=ais">Изображение от catalyststuff</a> на Freepik)~~
 
 
 # Это описание задачи
@@ -88,6 +88,9 @@ BUG_ID=1 npm run test:uint
 # Прежде чем снимать баллы
 Проверь правильно ли отработала гермиона.
 На некоторых тестах гермиона выдает несколько заваленных тестов. Я бы мог сделать так, чтобы она выдавала только один, но мне показалось это неправильным. Я отталкивался от верстки и того, что она должна хорошо выглядеть при различных ширинах экрана. Поэтому на один баг может лететь верстка сразу нескольких тестов. Я ориентировался не по конкретным тестам, а по дескрайбам. Прошу это учесть.
+
+Также гермиона проверяет работу многих модулей, и если какой-нибудь модуль полетел (unit отловил его), то пользовательский опыт пострадает, и гермиона тоже найдет ошибку.
+
 ## Как проверять
 
 Вы можете запускать приложение с параметром `bug id`, который может принимать значение от 1 до 10. Каждое из значений `bug id` добавляет в работу приложения какой-то баг. Проверьте, что без параметра `bug id` все тесты проходят, а для каждого значения `bug id` падают 1-2 теста.
